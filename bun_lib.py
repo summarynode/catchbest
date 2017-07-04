@@ -6,7 +6,8 @@ import pymysql
 import redis
 import time
 
-class DayService:
+
+class BunService:
 
    allData = {}
 
@@ -17,7 +18,7 @@ class DayService:
       print 'add [%d]' % num
 
    def loading(self, sdate):
-      filepath = '/home/erpy/catch_best/1bong-price-%s.log.sort' % sdate
+      filepath = '/home/erpy/catch_best/2bunbong-price-%s.log.sort' % sdate
       print 'filepath [%s]' % filepath
 
       bOut = False
@@ -26,7 +27,7 @@ class DayService:
       while True:
          if bOut: break;
          aft_code = ""
-         day_list = []
+         bun_list = []
          while True:
             last_pos = f.tell()
             line = f.readline().strip()
@@ -35,23 +36,23 @@ class DayService:
                break
 
             items = line.split('|') 
-            if len(items) != 8:
+            if len(items) != 7:
                continue
 
             #print 'line [%s]' % line
-            s_code = items[1]
+            s_code = items[0]
             if len(aft_code) != 0:
                if s_code != aft_code:
-                  DayService.allData[aft_code] = day_list
+                  BunService.allData[aft_code] = bun_list
                   f.seek(last_pos)
                   #print 'allDict size [%d] [%d]' % (len(DayService.allData), len(day_list))
                   break
 
-            day_list.append(line)
+            bun_list.append(line)
             aft_code = s_code
 
 
       f.close()
 
-      return DayService.allData
+      return BunService.allData
       
