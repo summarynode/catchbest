@@ -8,31 +8,44 @@ import time
 
 # key | code | date | open | close | high | low | volum
 
-class HighValue:
+class BollBen:
 
    def __init__(self):
-      print 'init HighValue'
+      self.priceMeansDic = {}
+      self.fpPriceMeans = open('/Users/oj.bae/Work/catchbest/out/priceMeans.dat', 'r')
+      self.fpBollBen = open('/Users/oj.bae/Work/catchbest/out/bollBen.dat', 'w')
+
+      while True:
+         line = self.fpPriceMeans.readline().strip()
+         if not line:
+            print 'priceMeans breaking...'
+            break
+
+         fields = line.split('|')
+         if len(fields) != 7:
+            print 'skip is not 7 items [%s]' % (line)
+            continue
+
+         scode = fields[0]
+         print 'scode [%s] [%s]' % (scode, str(fields))
+
+      print 'init BollBen'
    
-   def find(self, nbong, dataAll):
-      for key, value in dataAll.items():
-
-         print 'code [%s]' % key
-         per = 0.0
+   def find(self, lastDate, dataAll):
+      print 'Start BollBen...'
+      for key, lists in dataAll.items():
          nbong = 0
-         tomo_close = 0.0
-         tomo_date = ""
-
-         for items in value:
+         for items in lists:
             fields = items.split('|')
-            #print 'code [%s], date[%s]' % (fields[1], fields[2])
-            if nbong > 0:
-               per = ((tomo_close / float(fields[3])) - 1.0) * 100.0
-               if per > 15:
-                  print '[%s] -> %0.2f [%d] [%d]' % (tomo_date, per, tomo_close, int(fields[3]))
-               
-            nbong += 1 
-            tomo_close = float(fields[3])
-            tomo_date  = fields[2]
-            #print '[%s] [%s]' % (key, items)
-          
+            if nbong == 0:
+               lastWorkDayOpen    = int(fields[3])
+               lastWorkDayClose   = int(fields[4])
+               #print 'code [%s], date[%s], Open[%d], Close[%d]' % (fields[1], fields[2], lastWorkDayOpen, lastWorkDayClose)
+
+            nbong += 1
+
+      self.fpPriceMeans.close()
+      self.fpBollBen.close()
+
+# end
 

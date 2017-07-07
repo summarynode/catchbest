@@ -17,7 +17,7 @@ class DayService:
       print 'add [%d]' % num
 
    def loading(self, sdate):
-      filepath = '/Users/oj.bae/Work/catchbest/out/1bong-price-%s.log.sort' % sdate
+      filepath = '/home/erpy/catch_best/1bong-price-%s.log.sort' % sdate
       print 'filepath [%s]' % filepath
 
       bOut = False

@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
    r = connectRedis()
 
-   file_path = "/home/erpy/out/1bong-price-%s.log" % (sys.argv[1])
+   file_path = "/Users/oj.bae/Work/catchbest/out/1bong-price-%s.log" % (sys.argv[1])
    f = open(file_path, 'w')
 
    for rkey in r.scan_iter():
