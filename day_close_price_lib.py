@@ -13,7 +13,7 @@ class ClosePrice:
    def __init__(self):
       print 'init ClosePrice'
    
-   def find(self, dataAll, sdate):
+   def find(self, sdate, dataAll):
       nbong = 0
       ldate = long(sdate)
       for key, value in dataAll.items():

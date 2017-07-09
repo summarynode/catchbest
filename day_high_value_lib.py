@@ -13,7 +13,7 @@ class HighValue:
    def __init__(self):
       print 'init HighValue'
    
-   def find(self, nbong, dataAll):
+   def find(self, maxBong, dataAll):
       for key, value in dataAll.items():
 
          print 'code [%s]' % key
@@ -33,6 +33,9 @@ class HighValue:
             nbong += 1 
             tomo_close = float(fields[3])
             tomo_date  = fields[2]
+            if nbong > maxBong:
+               break
+
             #print '[%s] [%s]' % (key, items)
           
 

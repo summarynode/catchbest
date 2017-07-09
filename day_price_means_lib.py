@@ -5,13 +5,16 @@ import sys
 import pymysql
 import redis
 import time
+import config_lib
 
 # key | code | date | open | close | high | low | volum
 
 class PriceMeans:
 
    def __init__(self):
-      self.fp = open('/Users/oj.bae/Work/catchbest/out/priceMeans.dat', 'w')
+      conf = config_lib.CaBeConfig()
+      price_means_out_path = '%s/priceMeans.dat' % conf.get_outpath()
+      self.fp = open(price_means_out_path, 'w')
       print 'init PriceMeans'
    
    def find(self, lastDate, dataAll):

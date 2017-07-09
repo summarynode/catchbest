@@ -5,6 +5,7 @@ import sys
 import pymysql
 import redis
 import time
+import config_lib
 
 
 dataAll = {}
@@ -89,7 +90,8 @@ if __name__ == "__main__":
 
    r = connectRedis()
 
-   file_path = "/Users/oj.bae/Work/catchbest/out/1bong-price-%s.log" % (sys.argv[1])
+   conf = config_lib.CaBeConfig()
+   file_path = "%s/1bong-price-%s.log" % (conf.get_outpath(), sys.argv[1])
    f = open(file_path, 'w')
 
    for rkey in r.scan_iter():

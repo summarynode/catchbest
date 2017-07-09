@@ -5,6 +5,7 @@ import sys
 import pymysql
 import redis
 import time
+import config_lib
 
 class DayService:
 
@@ -17,12 +18,13 @@ class DayService:
       print 'add [%d]' % num
 
    def loading(self, sdate):
-      filepath = '/Users/oj.bae/Work/catchbest/out/1bong-price-%s.log.sort' % sdate
-      print 'filepath [%s]' % filepath
+      conf = config_lib.CaBeConfig()
+      loading_day_path = '%s/1bong-price-%s.log.sort' % (conf.get_outpath(), sdate)
+      print 'loading_day_path [%s]' % loading_day_path
 
       bOut = False
       total = 0
-      f = open(filepath, 'r')
+      f = open(loading_day_path, 'r')
       while True:
          if bOut: break;
          aft_code = ""
