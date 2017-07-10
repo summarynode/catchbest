@@ -11,7 +11,8 @@ import ConfigParser
 class CaBeConfig:
 
    def __init__(self):
-      conf_file = '/home/erpy/catchbest/catchbest.conf'
+      conf_file = '/Users/oj.bae/Work/catchbest/catchbest/catchbest.conf'
+      #conf_file = '/home/erpy/catchbest/catchbest.conf'
       self.config = ConfigParser.ConfigParser()
       self.config.read(conf_file)
       self.out_path = self.config.get('path','out_path')

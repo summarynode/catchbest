@@ -5,14 +5,24 @@ import sys
 import pymysql
 import redis
 import time
+import config_lib
 
 # key | code | date | open | close | high | low | volum
 
 class StartPoint:
 
    def __init__(self):
-      print 'init ClosePrice'
+      conf = config_lib.CaBeConfig()
+      sp_path = '%s/startPoint.dat' % conf.get_outpath()
+      self.fpStartPoint = open(sp_path, 'w')
+      print 'StartPint __init__'
+
+
+   def __del__(self):
+      self.fpStartPoint.close()
+      print 'StartPoint __del__'
    
+
    def find(self, sdate, dataAll):
       ldate = long(sdate)
       for key, value in dataAll.items():
@@ -43,6 +53,8 @@ class StartPoint:
             if nbong >= 250:
                break
 
-         print '[시작점] [%s] [%s] open[%d], close[%d], volum[%d]' % (scode, curDate, spOpen, spClose, maxVolum)
+         buf = '%s|%s|%d|%d|%d\n' % (scode, curDate, spOpen, spClose, maxVolum)
+         self.fpStartPoint.write(buf)
+         print '[startPoint] [%s] [%s] open[%d], close[%d], volum[%d]' % (scode, curDate, spOpen, spClose, maxVolum)
 
 # end
