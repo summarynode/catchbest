@@ -14,6 +14,7 @@ class BollBen:
 
    def __init__(self):
       self.sixPriceMeansDic = {}
+      self.bollBenTouchDic = {}
       conf = config_lib.CaBeConfig()
 
       six_price_means_path = '%s/5priceMeans.dat' % conf.get_outpath()
@@ -35,8 +36,8 @@ class BollBen:
 
          skey = str(fields[0])
 
-         self.sixPriceMeansDic[skey] = float(fields[1].strip())
-         print 'skey [%s] [%s]' % (skey, str(fields))
+         self.sixPriceMeansDic[skey] = round(float(fields[1].strip()), 2)
+         print '[5 Days PM Loading key] [%s] [%f]' % (skey, self.sixPriceMeansDic[skey])
 
       self.fpPriceMeans.close()
       print 'init BollBen'
@@ -52,7 +53,13 @@ class BollBen:
       if topPrice >= bollbenLow and lowPrice <= bollbenLow:
          return True
       return False
-   
+
+
+   def isBollbenList(self, scode):
+      if scode in self.bollBenTouchDic:
+         return True
+      return False
+
 
    def find(self, lastDate, dataAll):
       print 'Start BollBen...'
@@ -112,32 +119,41 @@ class BollBen:
                      priceMeans = float(fields[4])
 
                   #lnTmp = pow(2, (int(fields[4]) - priceMeans))
-                  lnTmp = (float(fields[4]) - priceMeans) ** 2
+                  lnTmp = round((float(fields[4]) - priceMeans) ** 2, 2)
                   n20 += lnTmp
 
                   if nBong == 20:
                      siTmp = n20 / 19.0
                      # bollBen LOW
-                     bollBenLow = priceMeans - (math.sqrt(siTmp) * 2)
+                     bollBenLow = round(priceMeans - (math.sqrt(siTmp) * 2), 2)
                      # bollBen TOP
-                     bollBenTop = priceMeans + (math.sqrt(siTmp) * 2)
+                     bollBenTop = round(priceMeans + (math.sqrt(siTmp) * 2), 2)
                      
-                     print '[볼벤하단] [%s] [%s] 하단[%f] 상단[%f]' % (fields[1], curDate, bollBenLow, bollBenTop)
+                     print '[BollBen] [%s] [%s] LOW[%f] TOP[%f]' % (fields[1], curDate, bollBenLow, bollBenTop)
 
                      if self.isSurpassBollbenLowLine(lastWorkDayHigh, lastWorkDayLow, bollBenLow):
-                        print '[bollBen low line surpass] [%s] [%s]' % (fields[1], curDate)
+                        if self.isBollbenList(fields[1]) == False:
+                           buf = '%s|SU|%f|%d|%d\n' % (fields[1], bollBenLow, lastWorkDayLow, lastWorkDayHigh)
+                           self.fpBollBen.write(buf)
+                           self.bollBenTouchDic[fields[1]] = "SU"
+                           print '[bollBen low line surpass] [%s] [%s]' % (fields[1], curDate)
                      else:
                         # lowPrice vs bollBenLowLine
                         siPer = ((bollBenLow / lastWorkDayLow) -1) * 100
                         if abs(siPer) < 1.5:
-                           print '[lowPrice bollBen low line touch] [%s] [%s] [%f]' % (fields[1], curDate, abs(siPer))
+                           if self.isBollbenList(fields[1]) == False:
+                              buf = '%s|LO|%f|%f\n' % (fields[1], bollBenLow, abs(siPer))
+                              self.fpBollBen.write(buf)
+                              self.bollBenTouchDic[fields[1]] = "LO"
+                              print '[lowPrice bollBen LOW line touch] [%s] [%s] [%f]' % (fields[1], curDate, abs(siPer))
 
                         # highPrice vs bollBenLowLine
                         siPer = ((bollBenLow / lastWorkDayHigh) -1) * 100
                         if abs(siPer) < 1.5:
-                           print '[highPrice bollBen low line touch] [%s] [%s] [%f]' % (fields[1], curDate, abs(siPer))
-
-
+                           if self.isBollbenList(fields[1]) == False:
+                              buf = '%s|TO|%f|%f\n' % (fields[1], bollBenLow, abs(siPer))
+                              self.fpBollBen.write(buf)
+                              self.bollBenTouchDic[fields[1]] = "TO"
+                              print '[highPrice bollBen TOP line touch] [%s] [%s] [%f]' % (fields[1], curDate, abs(siPer))
 
 # end
-
