@@ -116,14 +116,15 @@ class BollBen:
                   if skey in self.sixPriceMeansDic:
                      priceMeans = self.sixPriceMeansDic[skey]
                   else:
-                     priceMeans = float(fields[4])
+                     print 'Breaking nBong[%d]' % nBong
+                     break
 
                   #lnTmp = pow(2, (int(fields[4]) - priceMeans))
                   lnTmp = round((float(fields[4]) - priceMeans) ** 2, 2)
                   n20 += lnTmp
 
                   if nBong == 20:
-                     siTmp = n20 / 19.0
+                     siTmp = n20 / 20.0
                      # bollBen LOW
                      bollBenLow = round(priceMeans - (math.sqrt(siTmp) * 2), 2)
                      # bollBen TOP

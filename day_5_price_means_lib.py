@@ -21,7 +21,7 @@ class SixPriceMeans:
       print 'Start 5 PriceMeans...'
       for key, lists in dataAll.items():
 
-         for nIndex in range(0,7):
+         for nIndex in range(0, 20):
  
             n20 = 0.0
             fvalue = 0.0
@@ -43,7 +43,8 @@ class SixPriceMeans:
                nbong += 1
 
                if nbong <= 20 and total_bong >= 20:
-                  #fvalue = (int(fields[4]) + int(fields[5]) + int(fields[6])) / 3
+                  #fvalue = (int(fields[3]) + int(fields[4]) + int(fields[5]) + int(fields[6])) / 4.0
+                  #fvalue = (int(fields[4]) + int(fields[5]) + int(fields[6])) / 3.0
                   #n20 += fvalue
                   n20 += float(fields[4]) # Close
                   if nbong == 20:
