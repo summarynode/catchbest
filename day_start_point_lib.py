@@ -50,7 +50,7 @@ class StartPoint:
 
             nbong += 1 
 
-            if nbong >= 250:
+            if nbong >= 224:
                break
 
          buf = '%s|%s|%d|%d|%d\n' % (scode, curDate, spOpen, spClose, maxVolum)
