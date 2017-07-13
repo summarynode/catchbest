@@ -9,6 +9,8 @@ import day_price_means_lib
 import day_bollben_lib
 import day_5_price_means_lib
 import day_start_point_lib
+import day_umumyang_5pms_surpass_lib
+import day_singo_lib
 import config_lib
 
 if __name__ == "__main__":
@@ -50,6 +52,12 @@ if __name__ == "__main__":
 
    day_start_point = day_start_point_lib.StartPoint()
    day_start_point.find(sdate, dataAll)
+
+   day_umumyang_5pms_surpass = day_umumyang_5pms_surpass_lib.Umumyang5Surpass()
+   day_umumyang_5pms_surpass.find(sdate, dataAll)
+
+   day_singo = day_singo_lib.Singo()
+   day_singo.find(sdate, dataAll)
 
 
    """
