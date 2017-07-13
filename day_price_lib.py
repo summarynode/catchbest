@@ -42,8 +42,8 @@ class DayPrice:
             if nBong > 0:
                break
 
-         buf = '%s|%d|%d|%d|%d\n' % (scode, nBong)
+         buf = '%s|%d|%d|%d|%d\n' % (scode, nOpen, nClose, nHigh, nLow)
          self.fpOut.write(buf)
-         print '[DayPrice] [%s] [%s]' % (scode, buf)
+         print '[DayPrice] [%s] [%s]' % (scode, buf.strip())
           
 #end 
