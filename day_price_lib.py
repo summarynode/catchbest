@@ -36,13 +36,14 @@ class DayPrice:
             nHigh   = int(fields[5])
             nLow    = int(fields[6])
             scode   = str(fields[1])
+            volum   = str(fields[7])
 
             nBong += 1 
 
             if nBong > 0:
                break
 
-         buf = '%s|%d|%d|%d|%d\n' % (scode, nOpen, nClose, nHigh, nLow)
+         buf = '%s|%d|%d|%d|%d|%s\n' % (scode, nOpen, nClose, nHigh, nLow, volum)
          self.fpOut.write(buf)
          print '[DayPrice] [%s] [%s]' % (scode, buf.strip())
           

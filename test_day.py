@@ -12,6 +12,7 @@ import day_start_point_lib
 import day_umumyang_5pms_surpass_lib
 import day_singo_lib
 import day_price_lib
+import day_gapsang_umbong_lib
 import config_lib
 
 if __name__ == "__main__":
@@ -62,6 +63,9 @@ if __name__ == "__main__":
 
    day_price = day_price_lib.DayPrice()
    day_price.find(sdate, dataAll)
+
+   day_gapsang_umbong = day_gapsang_umbong_lib.GapSangUm()
+   day_gapsang_umbong.find(sdate, dataAll)
 
 
    """
