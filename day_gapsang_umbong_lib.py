@@ -43,6 +43,8 @@ class GapSangUm:
             if nYesterdayClose > 0:
                if nYesterdayOpen > nClose and nYesterdayOpen > nOpen and nYesterdayClose > nOpen and nYesterdayClose > nClose:
                   if nYesterdayOpen > nYesterdayClose:
+                     buf = '%s|%s\n' % (scode, curDate)
+                     self.fpOut.write(buf)
                      print '[GapSangUm] [%s] [%s]' % (scode, curDate)
                      nTotal += 1
 

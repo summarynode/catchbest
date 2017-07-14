@@ -93,7 +93,6 @@ if __name__ == "__main__":
    r = connectRedis()
    f = open(sys.argv[1], 'r')
 
-
    while True:
       line = f.readline()
       if not line: break
