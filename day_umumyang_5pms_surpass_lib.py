@@ -28,9 +28,14 @@ class Umumyang5Surpass:
 
          #print 'code [%s]' % key
          nBong = 0
-         pPer = 0.0
+         pPer1 = 0.0
+         pPer2 = 0.0
          n0BongClose = 0
+         nTradeAmount0 = 0
+         nTradeAmount1 = 0
+         nTradeAmount2 = 0
          n1BongClose = 0
+         n2BongClose = 0
          curDate = ""
 
          for items in value:
@@ -46,22 +51,30 @@ class Umumyang5Surpass:
                else:
                   curDate = fields[2]
                   n0BongClose = nClose
+                  nTradeAmount0 = int(fields[7])
 
             if nBong == 1:
-               if nOpen <= nClose:
+               if nOpen >= nClose:
                   break
                else:
                   n1BongClose = nClose
+                  nTradeAmount1 = int(fields[7])
 
             if nBong == 2:
                if nOpen <= nClose:
                   break
                else:
-                  pPer = ((n0BongClose / n1BongClose) - 1) * 100
-                  buf = '%s|%s|%f\n' % (fields[1], curDate, pPer)
-                  self.fpOut.write(buf)
+                  n2BongClose = nClose
+                  nTradeAmount2 = int(fields[7])
 
-                  print '[umyangyang] [%s] per[%f] date[%s]' % (fields[1], pPer,  fields[2])
+                  pPer1 = ((n0BongClose / n1BongClose) - 1) * 100
+                  pPer2 = ((n1BongClose / n2BongClose) - 1) * 100
+                  buf = '%s|%s|%f|%f\n' % (fields[1], curDate, pPer1, pPer2)
+
+                  if n1BongClose < n0BongClose and (pPer1 >= 3 or pPer2 >= 3):
+                     #if nTradeAmount0 < nTradeAmount1:
+                     self.fpOut.write(buf)
+                     print '[umyangyang] [%s] per1[%f] per2[%d] date[%s]' % (fields[1], pPer1, pPer2, fields[2])
                
             nBong += 1 
 

@@ -86,6 +86,7 @@ if __name__ == "__main__":
    print 'argv[1] : %s' % sys.argv[1]
 
    total = 0
+   ldate = long(sys.argv[1])
    p_start = time.time()
 
    r = connectRedis()
@@ -96,8 +97,19 @@ if __name__ == "__main__":
 
    for rkey in r.scan_iter():
       total += 1
-      r_value = r.get(rkey)
-      buf = '%s|%s' % (rkey, r_value)
+      r_value = str(r.get(rkey)).strip()
+
+      fields = r_value.split('|')
+      if len(fields) != 7:
+         print 'fields length is NOT 7'
+         continue
+      
+      lCurDate = long(fields[1])
+      if lCurDate >= ldate:
+         #print 'SKIP [%d]' % lCurDate
+         continue
+
+      buf = '%s|%s\n' % (rkey, r_value)
       f.write(buf)
       
       #print '%s:%s' % (rkey, r_value)
