@@ -12,11 +12,55 @@ class DayService:
    allData = {}
 
    def __init__(self):
-      print '__init__'
-   
-   def cprint(self, num):
-      print 'add [%d]' % num
+      print '__init__ DayService'
 
+
+   def __del__(self):
+      print '__del__ DayService'
+
+
+   def connectRedis(self):
+      self.redi = redis.StrictRedis(host='localhost', port=7379, db=0)
+      return self.redi
+
+
+   def isExistRedis(self, key, redi):
+      if len(key.strip()) == 0:
+         return False
+
+      r_value = redi.get(key)
+      if r_value == None:
+         return False
+
+      if len(r_value.strip()) == 0:
+         return False
+
+      return True
+
+
+   def getRedis(self, key, redi):
+      if len(key.strip()) == 0:
+         print 'getRedis() is key False [%s]' % str(key)
+         return ""
+
+      r_value = redi.get(key)
+      
+      return r_value
+
+
+   def setRedis(self, key, r_value, redi):
+      if len(key.strip()) == 0:
+         print 'setRedis is not key'
+         return False
+
+      ret = redi.set(key, r_value)
+      if ret == False:
+         print 'setRedis set False key[%s] value[%s]' % (str(key), str(r_value))
+         return False
+
+      return True
+
+   
    def loading(self, sdate):
       conf = config_lib.CaBeConfig()
       loading_day_path = '%s/1bong-price-%s.log.sort' % (conf.get_outpath(), sdate)

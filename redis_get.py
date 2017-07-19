@@ -18,32 +18,26 @@ import config_lib
 if __name__ == "__main__":
 
    if len(sys.argv) != 2:
-      print 'USAGE: date'
+      print 'USAGE: key'
       sys.exit()
 
-   sdate = str(sys.argv[1])
-   if len(sdate) != 8:
-      print 'date is not 8 length!!'
-      sys.exit()
-
-   print 'exec name : %s' % str(sys.argv[0])
-   print 'date : %s' % str(sys.argv[1])
+   key = str(sys.argv[1])
+   print 'key : %s' % str(sys.argv[1])
    
    conf = config_lib.CaBeConfig()
-   print 'raw_path [%s]' % conf.get_rawpath()
-   print 'out_path [%s]' % conf.get_outpath()
    
    # init class
    day = day_lib.DayService()
-   dataAll = day.loading(sdate)
-
-   allOut = []
-   day_find_high = day_high_value_lib.HighValue()
-   allOut = day_find_high.find(200, dataAll)
    r = day.connectRedis()
-   day.setRedis('high_value', allOut, r)
+   allOut = str(day.getRedis(key, r)).replace("[","").replace("]","").replace("'","")
+   
+   print 'allOut [%s]' % allOut
 
-
+   alist = allOut.split(",")
+   for items in alist:
+      fields = items.split("|")
+      if len(fields) == 2:
+         print 'list : %s, %s' % (fields[0], fields[1])
 
    """
    day_six_price_means = day_5_price_means_lib.SixPriceMeans()
