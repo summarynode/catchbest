@@ -33,7 +33,7 @@ class PSar:
 
 
    def psar(self):
-      if count == 0:
+      if self.count == 0:
          self.highval = nHigh
          self.lowval  = nLow
          self.direction = 0
