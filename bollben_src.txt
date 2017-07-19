@@ -1,0 +1,35 @@
+안녕하세요
+예스스탁입니다.
+
+수식안에 N1이라는 변수가 있습니다.
+어떤 값인지 알수없어 외부변수로 처리했습니다.
+
+input : mov3(60),N1(1);
+var : Price(0);
+
+Price = (close+high+low)/3;
+
+Var72= std(Price, mov3)[1];
+
+If close > DayHigh[1] Or close < DayLow[1] then {
+      If Var72>var72[1] then {
+            Var73=2-N1;
+      }
+}
+
+If close<highd(1) And close>lowd(1) then {
+      If Var72<var72[1] then {
+            Var73=2+N1;
+      }
+}
+
+Var56= wma(Price, mov3);
+Var42= wma(Price, mov3)+var73*std(Price, mov3)[1];
+Var43= wma(Price, mov3)-var73*std(Price, mov3)[1];
+
+Var70= ma(Var42, mov3);
+Var71= ma(Var43, mov3);
+Var94= Var70-var71;
+
+
+즐거운 하루되세요
