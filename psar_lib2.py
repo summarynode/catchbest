@@ -67,6 +67,7 @@ class PSar:
          self.Af = 0.02
 
       if self.ep != 0:
+         print 'step 1'
          if self.direction == 1:
             self.ep = self.highval
             self.sar1 = self.sar1 + self.afval * (self.ep - self.sar1)
@@ -97,6 +98,7 @@ class PSar:
                self.ep = 0
                self.highval = self.nHigh
       elif self.sar1 != 0 and self.ep == 0:
+         print 'step 2'
          if self.direction == 1:
             self.ep = self.highval
             self.afval = self.Af
@@ -116,6 +118,7 @@ class PSar:
                   if self.afval >= self.MaxAf:
                      self.afval = self.MaxAf
       else:
+         print 'step 3'
          if self.direction == 0:
             if todayC > yesterdayC:
                self.direction = 1
@@ -163,14 +166,14 @@ class PSar:
                todayC = nClose
                self.psar(todayC, yesterdayC)
                self.addCount()
-               print 'psar [%s] [%s] [%s]' % (scode, str(self.getSar()), sdate)
+               print 'psar [%s] [%s] [%s] high[%d] low[%d] todayC[%d] yesC[%d]' % (scode, str(self.getSar()), sdate, nHigh, nLow, todayC, yesterdayC)
 
             yesterdayC = nClose
 
-            if self.getLow() > self.nLow:
+            if self.getLow() > nLow:
                self.setLow(nLow)
             
-            if self.getHigh() < self.nHigh:
+            if self.getHigh() < nHigh:
                self.setHigh(nHigh)
 
             nBong += 1 
