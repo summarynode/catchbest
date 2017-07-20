@@ -116,8 +116,9 @@ else      // SAR 첨 시작
                    sar1 = lowval;                        // 상승추세로 전환시 다음 SAR값을 계산할 때 필요한 전 SAR값은 추세직전의 최저가를 사용하므로
          }
       }
-       lowval = min(low, lowval);                  // 추세 변경시 전 SAR값으로 최고가나 최저가가 필요하므로 
-       highval = max(high,highval);            // low, high를 전의 최고가, 최저가와 비교하여 최고가, 최저가를 저장             
+
+      lowval = min(low, lowval);                  // 추세 변경시 전 SAR값으로 최고가나 최저가가 필요하므로 
+      highval = max(high,highval);            // low, high를 전의 최고가, 최저가와 비교하여 최고가, 최저가를 저장             
 }
 
 //처음 시작할 때 다음 추세 변경이 일어날 때까지 SAR는 invalid 

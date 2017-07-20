@@ -13,6 +13,7 @@ import day_umumyang_5pms_surpass_lib
 import day_singo_lib
 import day_price_lib
 import day_gapsang_umbong_lib
+import psar_lib2
 import config_lib
 
 if __name__ == "__main__":
@@ -37,11 +38,19 @@ if __name__ == "__main__":
    day = day_lib.DayService()
    dataAll = day.loading(sdate)
 
+   # psar
+   psar = psar_lib2.PSar()
+   psar.find(200, dataAll)
+
+
+
+   """
    allOut = []
    day_find_high = day_high_value_lib.HighValue()
    allOut = day_find_high.find(200, dataAll)
    r = day.connectRedis()
    day.setRedis('high_value', allOut, r)
+   """
 
 
 
