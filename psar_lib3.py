@@ -17,6 +17,8 @@ class PSar:
       self.Low = 0
       self.Close = 0
       self.Date = ""
+      self.dataLen = 0
+
       self.highval = 0
       self.lowval = 0
       self.direction = True # bull
@@ -90,6 +92,7 @@ class PSar:
          nBong = 0
          self.initCount()
 
+         self.dataLen = len(dataAll)
          for items in reversed(value):
             fields = items.split('|')
             sdate   = int(fields[2])
