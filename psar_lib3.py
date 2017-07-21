@@ -12,23 +12,6 @@ import config_lib
 class PSar:
 
    def __init__(self):
-
-      self.High = 0
-      self.Low = 0
-      self.Close = 0
-      self.Date = ""
-      self.dataLen = 0
-
-      self.highval = 0
-      self.lowval = 0
-      self.direction = True # bull
-      self.sar1 = 0
-      self.afval = 0
-      self.ep = 0
-      self.count = 0
-      self.MaxAf = 0.2
-      self.Af = 0.02
-
       conf = config_lib.CaBeConfig()
       file_path = '%s/psar.dat' % conf.get_outpath() 
       self.fpOut = open(file_path, 'w')
@@ -39,63 +22,43 @@ class PSar:
       self.fpOut.close()
       print '__del__ PSar'
 
-   def setHigh(self, h):
-      self.High = h
-
-   def getHigh(self):
-      return self.High
-
-   def setLow(self, l):
-      self.Low = l
-
-   def getLow(self):
-      return self.Low
-
-   def setClose(self, c):
-      self.Close = c
-
-   def getClose(self):
-      return self.Close
-
-   def setDate(self, d):
-      self.Date = d
-
-   def getDate(self):
-      return self.Date
-
-   def addCount(self):
-      self.count = self.count + 1
-
-   def initCount(self):
-      self.count = 0
-
-   def getSar(self):
-      return self.sar1
-
-   def psar(self, todayC, yesterdayC):
-
-      if self.count == 0:
-         self.highval = self.nHigh
-         self.lowval  = self.nLow
-         self.direction = 0
-         self.sar1 = 0
-         self.afval = 0
-         self.ep = 0
-         self.MaxAf = 0.2
-         self.Af = 0.02
-
 
    def find(self, maxBong, dataAll):
+
       for key, value in dataAll.items():
 
-         #print 'code [%s]' % key
          nBong = 0
-         self.initCount()
+         item_total = 0
+         length = len(value)
+         dates  = [None] * length
+         highs  = [None] * length
+         lows   = [None] * length
+         closes = [None] * length
+         psar   = [None] * length
+         psarbull = [None] * length
+         psarbear = [None] * length
+         bull = True
+         iaf = 0.02
+         maxaf = 0.2
+         af = iaf
 
-         self.dataLen = len(dataAll)
-         for items in reversed(value):
+         value.reverse()
+         for items in value:
             fields = items.split('|')
-            sdate   = int(fields[2])
+            dates[item_total]  = str(fields[2])
+            highs[item_total]  = int(fields[5])
+            lows[item_total]   = int(fields[6])
+            closes[item_total] = int(fields[4])
+            psar[item_total]   = int(fields[4])
+            item_total += 1
+
+         ep = lows[0]
+         hp = highs[0]
+         lp = lows[0]
+            
+         for items in value:
+            fields  = items.split('|')
+            sdate   = str(fields[2])
             nOpen   = int(fields[3])
             nClose  = int(fields[4])
             nHigh   = int(fields[5])
@@ -103,25 +66,61 @@ class PSar:
             scode   = str(fields[1])
             volum   = str(fields[7])
 
-            if nBong == 0:
-               self.setLow(nLow)
-               self.setHigh(nHigh)
+            if nBong == 0 or nBong == 1:
+               nBong += 1
+               continue
 
-            if nBong > 0:
-               todayC = nClose
-               self.psar(todayC, yesterdayC)
-               self.addCount()
-               print 'psar [%s] [%s] [%s] high[%d] low[%d] todayC[%d] yesC[%d]' % (scode, str(self.getSar()), sdate, nHigh, nLow, todayC, yesterdayC)
+            if bull:
+               psar[nBong] = psar[nBong - 1] + af * (hp - psar[nBong - 1])
+            else:
+               psar[nBong] = psar[nBong - 1] + af * (lp - psar[nBong - 1])
 
-            yesterdayC = nClose
+            reverse = False
 
-            if self.getLow() > nLow:
-               self.setLow(nLow)
-            
-            if self.getHigh() < nHigh:
-               self.setHigh(nHigh)
+            if bull:
+               if lows[nBong] < psar[nBong]:
+                  bull = False
+                  reverse = True
+                  psar[nBong] = hp
+                  lp = lows[nBong]
+                  af = iaf
+            else:
+               if highs[nBong] > psar[nBong]:
+                  bull = True
+                  reverse = True
+                  psar[nBong] = lp
+                  hp = highs[nBong]
+                  af = iaf
 
-            nBong += 1 
+
+            if not reverse:
+               if bull:
+                  if highs[nBong] > hp:
+                     hp = highs[nBong]
+                     af = min(af + iaf, maxaf)
+                  if lows[nBong - 1] < psar[nBong]:
+                     psar[nBong] = lows[nBong - 1]
+                  if lows[nBong - 2] < psar[nBong]:
+                     psar[nBong] = lows[nBong - 2]
+               else:
+                  if lows[nBong] < lp:
+                     lp = lows[nBong]
+                     af = min(af + iaf, maxaf)
+                  if highs[nBong - 1] > psar[nBong]:
+                     psar[nBong] = highs[nBong - 1]
+                  if highs[nBong - 2] > psar[nBong]:
+                     psar[nBong] = highs[nBong - 2]
+
+               if bull:
+                  psarbull[nBong] = psar[nBong]
+                  if sdate == "20170629":
+                     print 'bull [%s] [%s]' % (scode, sdate)
+               else:
+                  psarbear[nBong] = psar[nBong]
+                  if sdate == "20170629":
+                     print 'bear [%s] [%s]' % (scode, sdate)
+
+            nBong += 1
 
          #buf = '%s|%d|%d|%d|%d|%s\n' % (scode, nOpen, nClose, nHigh, nLow, volum)
          #self.fpOut.write(buf)

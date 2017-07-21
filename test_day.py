@@ -13,7 +13,7 @@ import day_umumyang_5pms_surpass_lib
 import day_singo_lib
 import day_price_lib
 import day_gapsang_umbong_lib
-import psar_lib2
+import psar_lib3
 import config_lib
 
 if __name__ == "__main__":
@@ -39,7 +39,7 @@ if __name__ == "__main__":
    dataAll = day.loading(sdate)
 
    # psar
-   psar = psar_lib2.PSar()
+   psar = psar_lib3.PSar()
    psar.find(200, dataAll)
 
 
