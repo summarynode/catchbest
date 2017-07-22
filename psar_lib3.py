@@ -30,7 +30,7 @@ class PSar:
          nBong = 0
          item_total = 0
          length = len(value)
-         dates  = [None] * length
+         #dates  = [None] * length
          highs  = [None] * length
          lows   = [None] * length
          closes = [None] * length
@@ -38,15 +38,17 @@ class PSar:
          psarbull = [None] * length
          psarbear = [None] * length
          bull = True
-         iaf = 0.02
-         maxaf = 0.2
+         #iaf = 0.02
+         #maxaf = 0.2
+         iaf = 0.015
+         maxaf = 0.15
          af = iaf
 
          value.reverse()
 
          for items in value:
             fields = items.split('|')
-            dates[item_total]  = str(fields[2])
+            #dates[item_total]  = str(fields[2])
             highs[item_total]  = int(fields[5])
             lows[item_total]   = int(fields[6])
             closes[item_total] = int(fields[4])
