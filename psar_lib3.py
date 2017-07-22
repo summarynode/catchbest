@@ -43,6 +43,7 @@ class PSar:
          af = iaf
 
          value.reverse()
+
          for items in value:
             fields = items.split('|')
             dates[item_total]  = str(fields[2])
@@ -52,7 +53,7 @@ class PSar:
             psar[item_total]   = int(fields[4])
             item_total += 1
 
-         ep = lows[0]
+
          hp = highs[0]
          lp = lows[0]
             
@@ -122,9 +123,11 @@ class PSar:
 
             nBong += 1
 
-         #buf = '%s|%d|%d|%d|%d|%s\n' % (scode, nOpen, nClose, nHigh, nLow, volum)
-         #self.fpOut.write(buf)
-         #print '[para] [%s] [%s]' % (scode, buf.strip())
+
+         # scode | bull | hp | lp | af | psar[nbong-1]
+         buf = '%s|%s|%f|%f|%f|%f\n' % (scode, str(bull), hp, lp, af, psar[nBong - 2])
+         self.fpOut.write(buf)
+
 
 
    if __name__ == "__main__":
