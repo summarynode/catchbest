@@ -12,6 +12,7 @@ import config_lib
 class SixPriceMeans:
 
    def __init__(self):
+      self.allOut = []
       conf = config_lib.CaBeConfig()
       price_means_out_path = '%s/5priceMeans.dat' % conf.get_outpath()
       self.fp = open(price_means_out_path, 'w')
@@ -49,8 +50,9 @@ class SixPriceMeans:
                   n20 += float(fields[4]) # Close
                   if nbong == 20:
                      buf = '%s_%s|%f\n' % (fields[1], moveLastWorkDay, n20 / 20)
+                     self.allOut.append(buf.strip())
                      self.fp.write(buf)
-                     print '[7 price means] %s_%s [%f] ' % (fields[1], moveLastWorkDay, n20 / 20)
+                     #print '[7 price means] %s_%s [%f] ' % (fields[1], moveLastWorkDay, n20 / 20)
               
                if nbong > 21:
                   break
@@ -60,6 +62,8 @@ class SixPriceMeans:
             #print 'code[%s], 5[%d] 5b[%d] 20[%d] 20b[%d] 60[%d] 60b[%d]' % (key, nMeans5, n4total, nMeans20, n19total, nMeans60, n59total)
 
       self.fp.close()
+      
+      return self.allOut
 
 # end
 

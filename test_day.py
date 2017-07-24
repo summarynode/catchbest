@@ -4,7 +4,7 @@
 import sys
 import day_lib
 import day_high_value_lib
-import day_close_price_lib
+import day_yesterday_price_lib
 import day_price_means_lib
 import day_bollben_lib
 import day_5_price_means_lib
@@ -43,8 +43,7 @@ if __name__ == "__main__":
    psar.find(200, dataAll)
 
 
-
-   """
+   """ test completed
    allOut = []
    day_find_high = day_high_value_lib.HighValue()
    allOut = day_find_high.find(200, dataAll)
@@ -52,15 +51,18 @@ if __name__ == "__main__":
    day.setRedis('high_value', allOut, r)
    """
 
-
-
-   """
+   """ test completed
    day_six_price_means = day_5_price_means_lib.SixPriceMeans()
-   day_six_price_means.find(sdate, dataAll)
+   allOut = day_six_price_means.find(sdate, dataAll)
+   r = day.connectRedis()
+   day.setRedis('six_price_means', allOut, r)
+   """
 
-   day_close_price = day_close_price_lib.ClosePrice()
-   day_close_price.find(sdate, dataAll)
+   day_yesterday_price = day_yesterday_price_lib.YesterdayPrice()
+   day_yesterday_price.find(sdate, dataAll)
 
+
+   """ 
    day_price_means = day_price_means_lib.PriceMeans()
    day_price_means.find(sdate, dataAll)
 

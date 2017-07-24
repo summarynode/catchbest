@@ -114,17 +114,16 @@ class PSar:
                   if highs[nBong - 2] > psar[nBong]:
                      psar[nBong] = highs[nBong - 2]
 
-               if bull:
-                  psarbull[nBong] = psar[nBong]
-                  if sdate == "20170629":
-                     print 'bull [%s] [%s]' % (scode, sdate)
-               else:
-                  psarbear[nBong] = psar[nBong]
-                  if sdate == "20170629":
-                     print 'bear [%s] [%s]' % (scode, sdate)
+            if bull:
+               psarbull[nBong] = psar[nBong]
+               if sdate == "20170629":
+                  print 'bull [%s] [%s]' % (scode, sdate)
+            else:
+               psarbear[nBong] = psar[nBong]
+               if sdate == "20170629":
+                  print 'bear [%s] [%s]' % (scode, sdate)
 
             nBong += 1
-
 
          # scode | bull | hp | lp | af | psar[nbong-1]
          buf = '%s|%s|%f|%f|%f|%f\n' % (scode, str(bull), hp, lp, af, psar[nBong - 2])
