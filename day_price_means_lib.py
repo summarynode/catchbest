@@ -15,7 +15,11 @@ class PriceMeans:
       conf = config_lib.CaBeConfig()
       price_means_out_path = '%s/priceMeans.dat' % conf.get_outpath()
       self.fp = open(price_means_out_path, 'w')
-      print 'init PriceMeans'
+      print '__init__ PriceMeans'
+
+   def __del__(self):
+      print '__del__ PriceMeans'
+      self.fp.close()
    
    def find(self, lastDate, dataAll):
       print 'Start PriceMeans...'
@@ -84,8 +88,6 @@ class PriceMeans:
          buf = '%s|%d|%d|%d|%d|%d|%d\n' % (key, nMeans5, n4total, nMeans20, n19total, nMeans60, n59total)
          self.fp.write(buf)
          #print 'code[%s], 5[%d] 5b[%d] 20[%d] 20b[%d] 60[%d] 60b[%d]' % (key, nMeans5, n4total, nMeans20, n19total, nMeans60, n59total)
-
-      self.fp.close()
 
 # end
 

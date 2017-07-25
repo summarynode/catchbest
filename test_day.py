@@ -38,9 +38,10 @@ if __name__ == "__main__":
    day = day_lib.DayService()
    dataAll = day.loading(sdate)
 
-   # psar
+   """ test  psar
    psar = psar_lib3.PSar()
    psar.find(200, dataAll)
+   """
 
 
    """ test completed
