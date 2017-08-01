@@ -6,6 +6,7 @@ import pymysql
 import redis
 import time
 import config_lib
+import datetime
 
 class DayService:
 
@@ -22,6 +23,11 @@ class DayService:
    def connectRedis(self):
       self.redi = redis.StrictRedis(host='localhost', port=7379, db=0)
       return self.redi
+
+
+   def getDayName(self, y, m, d):
+      dayString = ["MON", "THU","WED", "THU", "FRI", "SAT", "SUN"]
+      return dayString[datetime.date(y, m, d).weekday()]
 
 
    def isExistRedis(self, key, redi):

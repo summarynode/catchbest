@@ -16,7 +16,7 @@ class HighValue:
       conf = config_lib.CaBeConfig()
       high_price_path = '%s/HighPrice.dat' % conf.get_outpath() 
       self.fpHighPrice = open(high_price_path, 'w')
-      print 'init HighValue'
+      print '__init__ HighValue'
 
 
    def __del__(self):

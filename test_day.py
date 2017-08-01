@@ -14,6 +14,7 @@ import day_singo_lib
 import day_price_lib
 import day_gapsang_umbong_lib
 import psar_lib3
+import day_week_bong_lib
 import config_lib
 
 if __name__ == "__main__":
@@ -38,6 +39,8 @@ if __name__ == "__main__":
    day = day_lib.DayService()
    dataAll = day.loading(sdate)
 
+   print 'DAY : [%s]' % (day.getDayName(2017, 9,30))
+
    """ test  psar
    psar = psar_lib3.PSar()
    psar.find(200, dataAll)
@@ -59,8 +62,13 @@ if __name__ == "__main__":
    day.setRedis('six_price_means', allOut, r)
    """
 
+   """ test completed
    day_yesterday_price = day_yesterday_price_lib.YesterdayPrice()
    day_yesterday_price.find(sdate, dataAll)
+   """
+
+   day_week_bong = day_week_bong_lib.WeekBong()
+   day_week_bong.find(sdate, dataAll)
 
 
    """ 
