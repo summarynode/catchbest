@@ -1,10 +1,11 @@
 #!/usr/bin/python
-# -*- coding: cp949 -*-
+# coding=utf8
 
 import sys
 import pymysql
 import redis
 import time
+import day_lib
 import config_lib
 
 # key | code | date | open | close | high | low | volum
@@ -14,6 +15,7 @@ class WeekBong:
    def __init__(self):
       self.allOut = []
       conf = config_lib.CaBeConfig()
+      self.day = day_lib.DayService()
       high_price_path = '%s/weekBong.dat' % conf.get_outpath() 
       self.fpHighPrice = open(high_price_path, 'w')
       print '__init__ WeekBong'
@@ -38,7 +40,12 @@ class WeekBong:
 
             fields = items.split('|')
             sCode  = str(fields[1])
+
             sDate  = str(fields[2])
+            yy = int(sDate[0:4])
+            mm = int(sDate[4:6])
+            dd = int(sDate[6:8])
+
             nOpen  = int(fields[3])
             nClose = int(fields[4])
                
@@ -56,9 +63,10 @@ class WeekBong:
             if nIndex == 5:
                nFiveClose = nClose
 
-            print '[%s] [%s] [%s] [%d]' % (sCode, sDate, nClose, nIndex)
+            print '[%s] [%s] [%s] [%d] [%s]' % (sCode, sDate, nClose, nIndex, self.day.getDayName(yy, mm, dd))
 
       print '[WeekBong] %s' % str(self.allOut)
+
       return self.allOut
           
 # end

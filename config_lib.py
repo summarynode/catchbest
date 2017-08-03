@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: cp949 -*-
+# coding=utf8
 
 import sys
 import pymysql

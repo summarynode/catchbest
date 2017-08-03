@@ -102,7 +102,6 @@ class DayService:
             day_list.append(line)
             aft_code = s_code
 
-
       f.close()
 
       return DayService.allData
