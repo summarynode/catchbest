@@ -34,36 +34,93 @@ class WeekBong:
          nIndex = 0
          nFiveClose = 0
 
+         wOpen = 0
+         wClose = 0
+         wHigh = 0
+         wLow = 0
+
+         mondayFlag = True
+
+         value.reverse()
          for items in value:
             if len(value) < 100:
                break
 
             fields = items.split('|')
             sCode  = str(fields[1])
-
             sDate  = str(fields[2])
             yy = int(sDate[0:4])
             mm = int(sDate[4:6])
             dd = int(sDate[6:8])
-
             nOpen  = int(fields[3])
             nClose = int(fields[4])
+            nHigh  = int(fields[5])
+            nLow   = int(fields[6])
+            today  = self.day.getDayName(yy, mm, dd)
                
-            if nbong > 100:
+            if nbong > 150:
                break
 
-            if nbong % 5 == 0:
-               print '===== [%d] [%d]' % (nIndex, nFiveClose)
-               nIndex = 0
-               nFiveClose = 0
-
-            nbong += 1 
-            nIndex += 1
+            if today == "MON":
+               wOpen  = nOpen
+               wClose = nClose
+               wHigh  = nHigh
+               wLow   = nLow
+               mondayFlag = False
+            elif today == "THU":
+               if wOpen == 0 and mondayFlag:
+                  nbong += 1
+                  continue
+               wClose = nClose
+               if wHigh < nHigh:
+                  wHigh = nHigh
+               if wLow > nLow:
+                  wLow = nLow
+            elif today == "WED":
+               if wOpen == 0 and mondayFlag:
+                  nbong += 1
+                  continue
+               wClose = nClose
+               if wHigh < nHigh:
+                  wHigh = nHigh
+               if wLow > nLow:
+                  wLow = nLow
+            elif today == "THU":
+               if wOpen == 0 and mondayFlag:
+                  nbong += 1
+                  continue
+               wClose = nClose
+               if wHigh < nHigh:
+                  wHigh = nHigh
+               if wLow > nLow:
+                  wLow = nLow
+            elif today == "FRI":
+               if wOpen == 0 and mondayFlag:
+                  nbong += 1
+                  continue
+               wClose = nClose
+               if wHigh < nHigh:
+                  wHigh = nHigh
+               if wLow > nLow:
+                  wLow = nLow
+            else:
+               print '### error today is ELSE [%s]' % today
 
             if nIndex == 5:
                nFiveClose = nClose
 
-            print '[%s] [%s] [%s] [%d] [%s]' % (sCode, sDate, nClose, nIndex, self.day.getDayName(yy, mm, dd))
+            nbong += 1
+
+            ########################
+            print '[week bong] [%s] [%s] o[%d] c[%d] h[%d] l[%d]' % (sCode, sDate, wOpen, wClose, wHigh, wLow)
+            ########################
+
+            wOpen = 0
+            wClose = 0
+            wHigh = 0
+            wLow = 0
+
+            #print '[%s] [%s] [%s] [%d] [%s]' % (sCode, sDate, nClose, nIndex, self.day.getDayName(yy, mm, dd))
 
       print '[WeekBong] %s' % str(self.allOut)
 

@@ -1,0 +1,119 @@
+#!/usr/bin/python
+# coding=utf8
+
+import sys
+import os
+import pymysql
+import redis
+import time
+import day_lib
+import config_lib
+
+"""
+code^
++-sign^
+accVolum^
++-close^
++-Open^
++-High^
++-Low^
+signTime^
+signPower^
++-PricePer^
+sellRemain^
+buyRemain
+"""
+
+class AccVolume:
+
+   def __init__(self):
+      self.allData = []
+      conf = config_lib.CaBeConfig()
+      self.day = day_lib.DayService()
+      print '__init__ AccVolume'
+
+   def __del__(self):
+      print '__del__ AccVolume'
+   
+
+   def loading(self, sdate):
+      conf = config_lib.CaBeConfig()
+      dummy_path = '%s/dummy-%s.log' % (conf.get_rawpath(), sdate)
+      fpDummy = open(dummy_path, 'r')
+      full_size = os.fstat(fpDummy.fileno()).st_size
+
+      total_line = 0
+      skip_line = 0
+
+      while True:
+         line = fpDummy.readline()
+         
+         cur_pos = fpDummy.tell()
+         if cur_pos >= full_size:
+            break
+
+         if len(line.strip()) == 0:
+            skip_line += 1
+            continue
+         
+         """
+         if not line:
+            break
+         """
+
+         total_line += 1
+
+         self.allData.append(line.strip())
+         #print line
+
+      print 'total line : t[%d] s[%d] size[%d]' % (total_line, skip_line, len(self.allData))
+
+      return self.allData
+
+
+   def find(self, dataAll):
+
+      k = 0.0
+      t = 0.0
+      signAll = {}
+      volAll  = {}
+      resultAll = {}
+
+      for items in dataAll:
+         fields = items.split('^')
+         if len(fields) != 13:
+            print 'Error fiedls len not 13 : [%d]' % (len(fields))
+            continue
+
+         sCode = fields[0]
+         nSign = float(fields[1])
+         nVolume = float(fields[2])
+
+         # acc sign
+         if sCode in signAll:
+            k = signAll[sCode]
+            t = k + (nSign)
+            signAll[sCode] = t
+         else:
+            signAll[sCode] = nSign
+
+
+         # acc volume
+         volAll[sCode] = nVolume
+
+      st_total = 0
+      sper = 0.0
+      per = 0.0
+
+      for key, value in signAll.iteritems():
+         st_total += 1
+         if signAll[key] < 0:
+            continue
+
+         sper = signAll[key] / volAll[key]
+         per = sper * 100.0
+
+         if per > 25 and signAll[key] > 200000:
+            print '[%d] [%s] [%d] [%d] [%f] [%f]' % (st_total, key, value, volAll[key], round(sper,2), round(per,2))
+
+# end
