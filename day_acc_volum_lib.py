@@ -3,9 +3,11 @@
 
 import sys
 import os
+import time
+import operator
+
 import pymysql
 import redis
-import time
 import day_lib
 import config_lib
 
@@ -79,6 +81,7 @@ class AccVolume:
       volAll  = {}
       resultAll = {}
 
+      # calculate acc_volume
       for items in dataAll:
          fields = items.split('^')
          if len(fields) != 13:
@@ -97,14 +100,15 @@ class AccVolume:
          else:
             signAll[sCode] = nSign
 
-
-         # acc volume
+         # volume
          volAll[sCode] = nVolume
+
 
       st_total = 0
       sper = 0.0
       per = 0.0
 
+      # calculate acc_volume VS volume
       for key, value in signAll.iteritems():
          st_total += 1
          if signAll[key] < 0:
@@ -112,8 +116,17 @@ class AccVolume:
 
          sper = signAll[key] / volAll[key]
          per = sper * 100.0
+         resultAll[key] = per
 
+         """
          if per > 25 and signAll[key] > 200000:
             print '[%d] [%s] [%d] [%d] [%f] [%f]' % (st_total, key, value, volAll[key], round(sper,2), round(per,2))
+         """
+
+      st_total = 0
+
+      for key, value in resultAll.iteritems():
+         st_total += 1
+         print '%d) [%s] [%f] [%d] [%d]' % (st_total, key, resultAll[key], signAll[key], volAll[key])
 
 # end
