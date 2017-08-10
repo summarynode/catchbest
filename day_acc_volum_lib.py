@@ -29,16 +29,23 @@ buyRemain
 class AccVolume:
 
    def __init__(self):
+      self.sdate = ""
       self.allData = []
       conf = config_lib.CaBeConfig()
       self.day = day_lib.DayService()
+
+      out_path = '%s/accVolume.dat' % conf.get_outpath()
+      self.fpOut = open(out_path, "w")
+
       print '__init__ AccVolume'
 
    def __del__(self):
+      self.fpOut.close()
       print '__del__ AccVolume'
    
 
    def loading(self, sdate):
+      self.sdate = sdate
       conf = config_lib.CaBeConfig()
       dummy_path = '%s/dummy-%s.log' % (conf.get_rawpath(), sdate)
       fpDummy = open(dummy_path, 'r')
@@ -128,5 +135,7 @@ class AccVolume:
       for key, value in resultAll.iteritems():
          st_total += 1
          print '%d) [%s] [%f] [%d] [%d]' % (st_total, key, resultAll[key], signAll[key], volAll[key])
+         buf = "%s|%s|%f|%d|%d\n" % (key, self.sdate, resultAll[key], signAll[key], volAll[key])
+         self.fpOut.write(buf)
 
 # end
