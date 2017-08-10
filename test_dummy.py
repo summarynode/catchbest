@@ -18,12 +18,12 @@ if __name__ == "__main__":
       print 'date is not 8 length!!'
       sys.exit()
 
-   """
+   # calculate info
    acc = day_acc_volum_lib.AccVolume()
    dataAll = acc.loading(sdate)
    acc.find(dataAll)
-   """
 
+   # insert to db
    accdb = day_acc_volum_db_lib.AccVolumeDB()
    accdb.insertAll(sdate)
    
