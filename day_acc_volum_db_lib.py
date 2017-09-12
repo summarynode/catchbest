@@ -73,7 +73,10 @@ class AccVolumeDB:
 
          print sql
 
-         self.curs.execute(sql)
+         try:
+            self.curs.execute(sql)
+         except Exception as err:
+            print "Exception error [%s]" % str(err)
          
          total_insert += 1
 

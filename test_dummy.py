@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding=utf8
 
+import os
 import sys
 import day_lib
 import config_lib
@@ -18,14 +19,23 @@ if __name__ == "__main__":
       print 'date is not 8 length!!'
       sys.exit()
 
-   # calculate info
-   acc = day_acc_volum_lib.AccVolume()
-   dataAll = acc.loading(sdate)
-   acc.find(dataAll)
+   raw_path = '/home/erpy/raw_data'
+   for dirName, subdirList, fileList in os.walk(raw_path):
+      print('Found directory: [%s]' % dirName)
+      for fname in fileList:
+         s = fname
+         sdate = s[6:14]
+         print'file [%s][%s]' % (fname, sdate)
 
-   # insert to db
-   accdb = day_acc_volum_db_lib.AccVolumeDB()
-   accdb.insertAll(sdate)
+         # calculate info
+         acc = day_acc_volum_lib.AccVolume()
+         dataAll = acc.loading(sdate)
+         acc.find(dataAll)
+         dataAll = []
+
+         # insert to db
+         accdb = day_acc_volum_db_lib.AccVolumeDB()
+         accdb.insertAll(sdate)
    
    print 'end'
 

@@ -118,8 +118,10 @@ class AccVolume:
       # calculate acc_volume VS volume
       for key, value in signAll.iteritems():
          st_total += 1
+         """
          if signAll[key] < 0:
             continue
+         """
 
          sper = signAll[key] / volAll[key]
          per = sper * 100.0
