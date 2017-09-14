@@ -77,6 +77,8 @@ class AccVolume:
 
       print 'total line : t[%d] s[%d] size[%d]' % (total_line, skip_line, len(self.allData))
 
+      fpDummy.close()
+
       return self.allData
 
 
@@ -136,7 +138,7 @@ class AccVolume:
 
       for key, value in resultAll.iteritems():
          st_total += 1
-         print '%d) [%s] [%f] [%d] [%d]' % (st_total, key, resultAll[key], signAll[key], volAll[key])
+         #print '%d) [%s] [%f] [%d] [%d]' % (st_total, key, resultAll[key], signAll[key], volAll[key])
          buf = "%s|%s|%f|%d|%d\n" % (key, self.sdate, resultAll[key], signAll[key], volAll[key])
          self.fpOut.write(buf)
 
